@@ -1,4 +1,6 @@
-﻿using MapperTeachingDemo.Domain.Students;
+﻿using MapperTeachingDemo.Domain;
+using MapperTeachingDemo.Domain.Enrollments;
+using MapperTeachingDemo.Domain.Students;
 using MapperTeachingDemo.Domain.Students.Dto;
 using MapsterMapper;
 using System;
@@ -14,23 +16,35 @@ public class StudentService : IstudentService
 
     private readonly IMapper _mapper;
 
-    public StudentService(IStudentRepository studentRepository , IMapper mapper)
+    private readonly IUnitOfWork _unitOfWork;
+
+    public StudentService(IStudentRepository studentRepository,
+                         IMapper mapper,
+                         IUnitOfWork unitOfWork)
     {
-       _studentRepository = studentRepository;
+        _studentRepository = studentRepository;
         _mapper = mapper;
+        _unitOfWork = unitOfWork;
     }
-    public async Task<AddStudentResultDto> CreateAsync(CreateStudentDto dto , CancellationToken cancellation)
+    public async Task<AddStudentResultDto> CreateAsync(CreateStudentDto dto, CancellationToken cancellation)
     {
 
-        var student = _mapper.Map<Student>(dto); 
+        //var student = _mapper.Map<Student>(dto);
+        //await _studentRepository.AddAsync(student, cancellation);
+        //return _mapper.Map<AddStudentResultDto>(student); 
+
+        var student = _mapper.Map<Student>(dto);
+        await _unitOfWork.Repository<Student>().AddAsync(student,cancellation);
+        await _unitOfWork.SaveChangesAsync(cancellation);
+
+        return _mapper.Map<AddStudentResultDto>(student);
+
+    }
+
+    public async Task<AddStudentResultDto> CreateWithManualMappAsync(CreateStudentDto dto, CancellationToken cancellation)
+    {
+        var student = new Student(dto.FirstName, dto.LastName, dto.Email, dto.BirthDate);
         await _studentRepository.AddAsync(student, cancellation);
-        return _mapper.Map<AddStudentResultDto>(student); ;
-    }
-
-    public async Task<AddStudentResultDto> CreateWithManualMappAsync(CreateStudentDto dto,CancellationToken cancellation)
-    {
-       var student = new Student(dto.FirstName , dto.LastName ,dto.Email , dto.BirthDate);
-        await _studentRepository.AddAsync(student,cancellation);
         return new AddStudentResultDto
         {
             Id=student.Id,

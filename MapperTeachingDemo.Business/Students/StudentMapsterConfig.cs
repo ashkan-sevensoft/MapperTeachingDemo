@@ -13,10 +13,18 @@ public class StudentMapsterConfig : IRegister
     public void Register(TypeAdapterConfig config)
     {
         config.NewConfig<CreateStudentDto, Student>();
+
+
+
         config.NewConfig<Student, StudentDetailListDto>()
             .Map(d => d.FullName, s => $"{s.FirstName} {s.LastName}");
 
+
+
+
         config.NewConfig<Student , AddStudentResultDto>()
               .Map(d => d.FullName, s => $"{s.FirstName} {s.LastName}");
+
+
     }
 }

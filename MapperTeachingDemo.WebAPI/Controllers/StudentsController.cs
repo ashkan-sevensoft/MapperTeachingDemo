@@ -24,7 +24,9 @@ public class StudentsController : ControllerBase
     [HttpPost("Version2")]
     public async Task<ActionResult<AddStudentResultDto>> CreateWithMapping(CreateStudentDto dto, CancellationToken cancellation)
     {
+       
         var result = await _studentService.CreateAsync(dto, cancellation);
+
         return Ok(result);
     }
     [HttpGet]

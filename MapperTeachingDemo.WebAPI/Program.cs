@@ -1,4 +1,5 @@
 using MapperTeachingDemo.Business.Students;
+using MapperTeachingDemo.Domain;
 using MapperTeachingDemo.Domain.Courses;
 using MapperTeachingDemo.Domain.Enrollments;
 using MapperTeachingDemo.Domain.Students;
@@ -13,6 +14,8 @@ using Microsoft.OpenApi.Models;
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+ 
 
 var config = TypeAdapterConfig.GlobalSettings;
 config.Scan(typeof(StudentMapsterConfig).Assembly);
@@ -33,12 +36,17 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+          options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<IStudentRepository, StudentRepository>();
-builder.Services.AddScoped<ICourseRepository, CourseRepository>();
-builder.Services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
+
+
+builder.Services.AddSPersistanceServices();
+
+
 builder.Services.AddScoped<IstudentService, StudentService>();
+
+ 
+
 
 var app = builder.Build();
 

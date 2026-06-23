@@ -5,6 +5,7 @@ namespace MapperTeachingDemo.Persistence.Courses;
 
 public class CourseRepository : GenericRepository<Course>, ICourseRepository
 {
+     
     public CourseRepository(AppDbContext dbContext) : base(dbContext)
     {
     }

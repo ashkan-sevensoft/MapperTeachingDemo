@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MapperTeachingDemo.Persistence;
 
-public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
+public  class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
 {
     protected readonly AppDbContext DbContext;
 
-    protected GenericRepository(AppDbContext dbContext)
+    public GenericRepository(AppDbContext dbContext)
     {
         DbContext = dbContext;
     }
@@ -16,7 +16,7 @@ public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity> w
     public async Task AddAsync(TEntity entity ,CancellationToken cancellation)
     {
         await DbContext.Set<TEntity>().AddAsync(entity );
-        await DbContext.SaveChangesAsync(cancellation);
+        //await DbContext.SaveChangesAsync(cancellation);
     }
 
     public async Task<List<TEntity>> QueryAsync(Expression<Func<TEntity, bool>> predicate, bool tracking = false,
@@ -48,7 +48,7 @@ public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity> w
         if (entity is null) return;
 
         DbContext.Set<TEntity>().Remove(entity);
-        await DbContext.SaveChangesAsync();
+        //await DbContext.SaveChangesAsync();
     }
 
     public async Task SoftDeleteAsync(Guid id)
@@ -57,12 +57,12 @@ public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity> w
         if (entity is null) return;
 
         entity.SetAsDeleted();
-        await DbContext.SaveChangesAsync();
+        //await DbContext.SaveChangesAsync();
     }
 
     public async Task UpdateAsync(TEntity entity)
     {
         DbContext.Set<TEntity>().Update(entity);
-        await DbContext.SaveChangesAsync();
+        //await DbContext.SaveChangesAsync();
     }
 }
