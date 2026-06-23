@@ -1,0 +1,6 @@
+@MapperTeachingDemo.WebAPI_HostAddress = http://localhost:5127
+
+GET {{MapperTeachingDemo.WebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

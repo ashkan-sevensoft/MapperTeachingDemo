@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="MapperTeachingDemo.Business/MapperTeachingDemo.Business.csproj" />
+  <Project Path="MapperTeachingDemo.Domain/MapperTeachingDemo.Domain.csproj" />
+  <Project Path="MapperTeachingDemo.Persistence/MapperTeachingDemo.Persistence.csproj" />
+  <Project Path="MapperTeachingDemo.WebAPI/MapperTeachingDemo.WebAPI.csproj" />
+</Solution>

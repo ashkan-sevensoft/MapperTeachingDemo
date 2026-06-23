@@ -1,0 +1,16 @@
+using System.Linq.Expressions;
+
+namespace MapperTeachingDemo.Domain;
+
+public interface IGenericRepository<TEntity> where TEntity : BaseEntity
+{
+    Task AddAsync(TEntity entity,CancellationToken cancellation);
+
+    Task<List<TEntity>> QueryAsync(Expression<Func<TEntity, bool>> predicate, bool tracking = false,
+        int pageSize = 10, int skip = 0);
+
+    Task<TEntity?> GetByIdAsync(Guid id, bool tracking = false);
+    Task HardDeleteAsync(Guid id);
+    Task SoftDeleteAsync(Guid id);
+    Task UpdateAsync(TEntity entity);
+}
