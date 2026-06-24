@@ -7,6 +7,8 @@ using MapperTeachingDemo.Persistence;
 using MapperTeachingDemo.Persistence.Courses;
 using MapperTeachingDemo.Persistence.Enrollments;
 using MapperTeachingDemo.Persistence.Students;
+using MapperTeachingDemo.WebAPI.Caching;
+using MapperTeachingDemo.WebAPI.Cashing;
 using Mapster;
 using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +17,13 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
- 
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+});
+
+builder.Services.AddSingleton<ICacheService, RedisCacheService>();
 
 var config = TypeAdapterConfig.GlobalSettings;
 config.Scan(typeof(StudentMapsterConfig).Assembly);

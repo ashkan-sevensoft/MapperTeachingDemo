@@ -2,6 +2,7 @@
 using MapperTeachingDemo.Domain.Enrollments;
 using MapperTeachingDemo.Domain.Students;
 using MapperTeachingDemo.Domain.Students.Dto;
+using MapperTeachingDemo.WebAPI.Cashing;
 using MapsterMapper;
 using System;
 using System.Collections.Generic;
@@ -18,13 +19,17 @@ public class StudentService : IstudentService
 
     private readonly IUnitOfWork _unitOfWork;
 
+    private readonly ICacheService _cacheService;
+
     public StudentService(IStudentRepository studentRepository,
                          IMapper mapper,
-                         IUnitOfWork unitOfWork)
+                         IUnitOfWork unitOfWork,
+                         ICacheService cacheService)
     {
         _studentRepository = studentRepository;
         _mapper = mapper;
         _unitOfWork = unitOfWork;
+        _cacheService=cacheService;
     }
     public async Task<AddStudentResultDto> CreateAsync(CreateStudentDto dto, CancellationToken cancellation)
     {
@@ -54,10 +59,24 @@ public class StudentService : IstudentService
 
     }
 
-    public async Task<List<StudentDetailListDto>> GetAllAsync()
+    public async Task<List<StudentDetailListDto>> GetAllAsync(bool fromCache = true)
     {
-        var students = await _studentRepository.QueryAsync(s => true);
+        var cacheKey = "student:allData";
+        if (fromCache)
+        {
 
-        return _mapper.Map<List<StudentDetailListDto>>(students);
+            var cached = await _cacheService.Get<List<StudentDetailListDto>>(cacheKey);
+            if (cached != null)
+            {
+                return cached;
+            }
+
+        }
+        var students = await _studentRepository.QueryAsync(s => true);
+        var result =  _mapper.Map<List<StudentDetailListDto>>(students);
+        await _cacheService.Set(cacheKey, result,TimeSpan.FromMinutes(10));
+
+        return result;
+
     }
 }

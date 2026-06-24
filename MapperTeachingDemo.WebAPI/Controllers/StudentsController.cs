@@ -30,9 +30,9 @@ public class StudentsController : ControllerBase
         return Ok(result);
     }
     [HttpGet]
-    public async Task<ActionResult<List<StudentDetailListDto>>> GetAll()
+    public async Task<ActionResult<List<StudentDetailListDto>>> GetAll(bool fromCache=true)
     {
-        var result = await _studentService.GetAllAsync();
+        var result = await _studentService.GetAllAsync(fromCache);
         return Ok(result);
     } 
 

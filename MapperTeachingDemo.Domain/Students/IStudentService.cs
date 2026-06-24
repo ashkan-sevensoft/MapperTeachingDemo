@@ -11,6 +11,6 @@ public interface IstudentService
 
     Task<AddStudentResultDto> CreateWithManualMappAsync(CreateStudentDto dto,CancellationToken cancellation);
     Task<AddStudentResultDto> CreateAsync(CreateStudentDto dto, CancellationToken cancellation);
-    Task<List<StudentDetailListDto>> GetAllAsync();
+    Task<List<StudentDetailListDto>> GetAllAsync(bool fromCache = true);
 
 }

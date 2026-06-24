@@ -12,6 +12,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="10.0.9" />
+    <PackageReference Include="StackExchange.Redis" Version="3.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
   </ItemGroup>
 
@@ -19,6 +21,10 @@
     <ProjectReference Include="..\MapperTeachingDemo.Domain\MapperTeachingDemo.Domain.csproj" />
     <ProjectReference Include="..\MapperTeachingDemo.Persistence\MapperTeachingDemo.Persistence.csproj" />
     <ProjectReference Include="..\MapperTeachingDemo.Business\MapperTeachingDemo.Business.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="View\Student\" />
   </ItemGroup>
 
 </Project>
